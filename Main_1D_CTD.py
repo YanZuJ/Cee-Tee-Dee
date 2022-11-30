@@ -49,7 +49,7 @@ class Start_Screen:
     def Enter_shortcut(self,event):
         print(event.state)
         print(event.keysym)
-        if event.state == 0 and event.keysym == "Return":
+        if event.state == 8 and event.keysym == "Return":
             self.update()
 
     #Username confirmation screen
@@ -110,8 +110,11 @@ class Gameplay_Screen:
         self.root.config(padx=40,pady=40)
 
         self.canvas = tk.Canvas(self.root, width=800, height=400)
-        self.card_title = self.canvas.create_text(400, 150, text="",font=("Poppins", 40, "italic"))
-        self.card_word = self.canvas.create_text(400, 250, text="", font=("Poppins", 60, "bold"))
+        self.card_title = self.canvas.create_text(400, 150, text="How to Play",font=("Poppins", 40, "italic","bold"))
+        self.card_word = self.canvas.create_text(400, 250, text=
+        "Reveal- Reveal back of flashcard \n"
+        "Correct - Removes flashcard pair from the deck\n"
+        "Wrong - Flashcard pair is reshuffled into the deck ", font=("Poppins", 20))
         self.canvas.config(highlightthickness=0)
         self.canvas.grid(row=0,column=0,columnspan=3)
 
@@ -120,15 +123,15 @@ class Gameplay_Screen:
 
         # Below Buttons are hidden until start/reveal answer is pressed
         self.Reveal_Button = tk.Button(self.root, text="Reveal", font=("Poppins", 20), command=self.reveal_answer)
-        self.Correct_Button = tk.Button(self.root, text="Remove \nfrom list", font=("Poppins", 20),command=self.remove_from_list)
-        self.Wrong_Button = tk.Button(self.root, text="Test yourself \nagain", font=("Poppins", 20,),command=self.test_yourself_again)
+        self.Correct_Button = tk.Button(self.root, text="Correct", font=("Poppins", 20),command=self.remove_from_list)
+        self.Wrong_Button = tk.Button(self.root, text="Wrong", font=("Poppins", 20,),command=self.test_yourself_again)
 
     # Starts the Game and reveals the reveal answer button, including the timer, for player Report
     def start_flashcards(self):
         global current_card
         current_card = random.choice(test_dict)
-        self.canvas.itemconfig(self.card_title, text="Chinese")
-        self.canvas.itemconfig(self.card_word, text=current_card["Chinese"])
+        self.canvas.itemconfig(self.card_title, text="Chinese",font=("Poppins", 40, "italic"))
+        self.canvas.itemconfig(self.card_word, text=current_card["Chinese"],font=("Poppins", 60, "bold"))
         self.Reveal_Button.grid(row=2, column=1)
         self.Start_Button.grid_forget()
         self.start_time=time.time()
@@ -216,6 +219,8 @@ class Report_Screen:
         global test_dict
         global test_dict_copy
         test_dict = test_dict_copy
+        global retry_count
+        retry_count=0
 
 class Credits_Screen:
     def __init__(self):
@@ -250,6 +255,5 @@ class Credits_Screen:
         self.Close_Button.pack(padx=10, pady=10)
 
 Start_Screen()
-
 
 
