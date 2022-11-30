@@ -29,7 +29,7 @@ class Start_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Loading Screen...")
-        self.root.geometry("400x200")
+        self.root.geometry("250x200")
 
         self.label = tk.Label(self.root, text="Enter your Name: ", font=('Poppins', 15))
         self.label.pack(padx=10, pady=10)
@@ -40,16 +40,15 @@ class Start_Screen:
         self.entry.bind("<KeyPress>", self.Enter_shortcut)
         self.entry.pack(padx=10, pady=10)
 
-        self.button = tk.Button(self.root, text="Enter ", font=('Poppins', 10),command=self.update)
+        self.button = tk.Button(self.root, text="Enter ", font=('Poppins', 15),command=self.update)
         self.button.pack(padx=10,pady=10)
 
         self.root.mainloop()
 
     # You can finally use the enter key to enter your name in the textbox, yeah it sucks
     def Enter_shortcut(self,event):
-        print(event.state)
         print(event.keysym)
-        if event.state == 8 and event.keysym == "Return":
+        if event.keysym == "Return":
             self.update()
 
     #Username confirmation screen
@@ -69,7 +68,7 @@ class Main_Menu_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Flashcard 1D")
-        self.root.geometry("600x500")
+        self.root.geometry("600x450")
 
         self.label2 = tk.Label(self.root,text=f"Welcome, {player_name}!",font=("Poppins",15))
         self.label2.pack(padx=5,pady=5)
@@ -184,31 +183,31 @@ class Report_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Report Screen")
-        self.root.geometry("600x400")
+        self.root.geometry("400x500")
 
         self.label = tk.Label(self.root,text=f"{player_name}'s Report", font=("Poppins",30))
         self.label.pack(padx=10,pady=10)
 
         self.label2 = tk.Label(self.root,text=f"You have learnt {len(learnt_words)} words",font=("Poppins",10))
-        self.label2.pack(padx=10,pady=10)
+        self.label2.pack(padx=5,pady=5)
 
         self.scrollbox = tk.Listbox(self.root)
         for values in learnt_words:
             self.scrollbox.insert("end", values)
-        self.scrollbox.pack(padx=10,pady=10,fill=tk.BOTH)
+        self.scrollbox.pack(padx=10,pady=10,fill=tk.BOTH,expand=True)
         self.scrollbar = tk.Scrollbar(self.scrollbox)
         self.scrollbar.pack(side=tk.RIGHT)
         self.scrollbox.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.config(command=self.scrollbox.yview)
 
         self.label3 = tk.Label(self.root,text=f"Retry Count: {retry_count}",font=("Poppins",10))
-        self.label3.pack(padx=10,pady=10)
+        self.label3.pack(padx=5,pady=5)
 
         self.label4 = tk.Label(self.root, text=f"Time Taken: {time_lapsed}", font=("Poppins", 10))
-        self.label4.pack(padx=10, pady=10)
+        self.label4.pack(padx=5, pady=5)
 
         self.Exit_Button = tk.Button(self.root,text="Exit", font=("Poppins", 16), command=self.exit_to_Main_Menu)
-        self.Exit_Button.pack(padx=10,pady=10)
+        self.Exit_Button.pack(padx=5,pady=5)
 
     #Exit to Main Menu, restores learnt_words to an empty list, and dictionary with its original elements for multiple replays
     def exit_to_Main_Menu(self):
