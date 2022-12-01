@@ -1,16 +1,17 @@
 import random
 import time as time
 import tkinter as tk
+import turtle
 from tkinter import messagebox
 
 #global variables
 time_lapsed = ""
 player_name = ""
 current_card = ""
-test_dict = [{"Chinese":"Ping Guo","English":"Apple"},
+test_dict_original = [{"Chinese":"Ping Guo","English":"Apple"},
              {"Chinese":"Cheng Zi","English":"Orange"},
              {"Chinese":"Xi Gua","English":"Watermelon"}]
-test_dict_copy = test_dict.copy()
+test_dict = test_dict_original.copy()
 learnt_words = []
 retry_count = 0
 
@@ -106,7 +107,7 @@ class Gameplay_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Gameplay")
-        self.root.config(padx=40,pady=40)
+        self.root.config(padx=30,pady=30)
 
         self.canvas = tk.Canvas(self.root, width=800, height=400)
         self.card_title = self.canvas.create_text(400, 150, text="How to Play",font=("Poppins", 40, "italic","bold"))
@@ -161,8 +162,8 @@ class Gameplay_Screen:
             time_lapsed = self.end_time - self.start_time
             time_lapsed = time_convert(time_lapsed)
             print(time_lapsed)
-            Report_Screen()
             self.root.withdraw()
+            Report_Screen()
         self.Reveal_Button.grid(row=1, column=1)
         self.Correct_Button.grid_forget()
         self.Wrong_Button.grid_forget()
@@ -183,10 +184,22 @@ class Report_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Report Screen")
-        self.root.geometry("400x500")
+        self.root.geometry("400x600")
 
-        self.label = tk.Label(self.root,text=f"{player_name}'s Report", font=("Poppins",30))
-        self.label.pack(padx=10,pady=10)
+        self.canvas = tk.Canvas(self.root, width=300, height=450)
+        self.canvas.pack(side=tk.TOP)
+        if retry_count == 0:
+            self.label = tk.Label(self.root, text=f"Well done, {player_name}!", font=("Poppins", 30))
+            self.label.pack(padx=10, pady=10)
+            self.display_happy()
+            time.sleep(1)
+            self.canvas.destroy()
+        if retry_count >= 1:
+            self.label = tk.Label(self.root, text=f"Try harder, {player_name}!", font=("Poppins", 30))
+            self.label.pack(padx=10, pady=10)
+            self.display_sad()
+            time.sleep(1)
+            self.canvas.destroy()
 
         self.label2 = tk.Label(self.root,text=f"You have learnt {len(learnt_words)} words",font=("Poppins",10))
         self.label2.pack(padx=5,pady=5)
@@ -216,10 +229,149 @@ class Report_Screen:
         global learnt_words
         learnt_words = []
         global test_dict
-        global test_dict_copy
-        test_dict = test_dict_copy
+        test_dict = test_dict_original.copy()
         global retry_count
         retry_count=0
+
+    def display_happy(self):
+        t = turtle.RawTurtle(self.canvas)
+        t.hideturtle()
+        t.color('green')
+        t.speed(0.5)
+        radius = 100
+        extent = 360
+
+        t.color('yellow')
+        t.begin_fill()
+        t.circle(radius, extent)  ##main circle
+        t.end_fill()
+
+        t.penup()
+        t.setposition(-50, 100)
+        t.pendown()
+        radius = 25
+        extent = 360
+
+        t.color('white')
+        t.begin_fill()
+        t.circle(radius, extent)  ##first eye
+        t.end_fill()
+
+        t.penup()
+        t.setposition(50, 100)
+        t.pendown()
+        radius = 25
+        extent = 360
+
+        t.begin_fill()
+        t.circle(radius, extent)
+        t.end_fill()  ##second eye
+        t.penup()
+
+        t.color('black')
+        t.begin_fill()
+        t.penup()
+        t.setposition(-50, 110)
+        t.pendown()
+        radius = 12.5
+        extent = 360
+        t.circle(radius, extent)
+        t.end_fill()
+        t.penup()
+
+        t.color('black')
+        t.begin_fill()
+        t.penup()
+        t.setposition(50, 110)
+        t.pendown()
+        radius = 12.5
+        extent = 360
+        t.circle(radius, extent)
+        t.end_fill()
+        t.penup()
+
+        t.color('red')
+        t.begin_fill()
+        t.setposition(0, 20)
+        t.pendown()
+        t.circle(50, 90)
+        t.left(90)
+        t.forward(100)
+        t.left(90)
+        t.circle(50, 90)
+        t.end_fill()
+        time.sleep(3)
+
+    def display_sad(self):
+        t = turtle.RawTurtle(self.canvas)
+        t.hideturtle()
+        t.color('green')
+        t.speed(0.5)
+        radius = 100
+        extent = 360
+
+        t.color('yellow')
+        t.begin_fill()
+        t.circle(radius, extent)  ##main circle
+        t.end_fill()
+
+        t.penup()
+        t.setposition(-50, 100)
+        t.pendown()
+        radius = 25
+        extent = 360
+
+        t.color('white')
+        t.begin_fill()
+        t.circle(radius, extent)  ##first eye
+        t.end_fill()
+
+        t.penup()
+        t.setposition(50, 100)
+        t.pendown()
+        radius = 25
+        extent = 360
+
+        t.begin_fill()
+        t.circle(radius, extent)
+        t.end_fill()  ##second eye
+        t.penup()
+
+        t.color('black')
+        t.begin_fill()
+        t.penup()
+        t.setposition(-50, 110)
+        t.pendown()
+        radius = 12.5
+        extent = 360
+        t.circle(radius, extent)
+        t.end_fill()
+        t.penup()
+
+        t.color('black')
+        t.begin_fill()
+        t.penup()
+        t.setposition(50, 110)
+        t.pendown()
+        radius = 12.5
+        extent = 360
+        t.circle(radius, extent)
+        t.end_fill()
+        t.penup()
+
+        t.circle(radius, extent)
+        t.penup()
+        t.setposition(0, 100)
+        t.pendown()
+        t.color('red')
+        t.begin_fill()
+        t.circle(-50, 90)
+        t.right(90)
+        t.forward(100)
+        t.right(90)
+        t.circle(-50, 90)
+        t.end_fill()
+        time.sleep(3)
 
 class Credits_Screen:
     def __init__(self):
