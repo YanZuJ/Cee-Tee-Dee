@@ -68,13 +68,13 @@ class Start_Screen:
 class Main_Menu_Screen:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Flashcard 1D")
+        self.root.title("Bing Chilling Flashcards")
         self.root.geometry("600x450")
 
         self.label2 = tk.Label(self.root,text=f"Welcome, {player_name}!",font=("Poppins",15))
         self.label2.pack(padx=5,pady=5)
 
-        self.label = tk.Label(self.root,text= "Flashcards", font=("Poppins", 40, "italic","bold"))
+        self.label = tk.Label(self.root,text= "BING CHILLING", font=("Poppins", 40, "italic","bold"))
         self.label.pack(padx=10,pady=40)
 
         self.Play_Button = tk.Button(self.root, text="Play",font=("Poppins", 12),command=self.to_gameplay)
@@ -422,3 +422,6 @@ class Credits_Screen:
         self.Close_Button.pack(padx=10, pady=10)
 
 Start_Screen()
+
+
+
