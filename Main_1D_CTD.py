@@ -107,14 +107,15 @@ class Gameplay_Screen:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Gameplay")
-        self.root.config(padx=30,pady=30)
+        self.root.config(padx=20,pady=20)
 
         self.canvas = tk.Canvas(self.root, width=800, height=400)
         self.card_title = self.canvas.create_text(400, 150, text="How to Play",font=("Poppins", 40, "italic","bold"))
         self.card_word = self.canvas.create_text(400, 250, text=
-        "Reveal- Reveal back of flashcard \n"
+        "- Guess the English translation of the given word on the flashcard -\n"
+        "Reveal - Reveal back of flashcard\n"
         "Correct - Removes flashcard pair from the deck\n"
-        "Wrong - Flashcard pair is reshuffled into the deck ", font=("Poppins", 20))
+        "Test again - Flashcard pair is reshuffled into the deck", font=("Poppins", 15))
         self.canvas.config(highlightthickness=0)
         self.canvas.grid(row=0,column=0,columnspan=3)
 
@@ -124,7 +125,7 @@ class Gameplay_Screen:
         # Below Buttons are hidden until start/reveal answer is pressed
         self.Reveal_Button = tk.Button(self.root, text="Reveal", font=("Poppins", 20), command=self.reveal_answer)
         self.Correct_Button = tk.Button(self.root, text="Correct", font=("Poppins", 20),command=self.remove_from_list)
-        self.Wrong_Button = tk.Button(self.root, text="Wrong", font=("Poppins", 20,),command=self.test_yourself_again)
+        self.Wrong_Button = tk.Button(self.root, text="Test again", font=("Poppins", 20,),command=self.test_yourself_again)
 
     # Starts the Game and reveals the reveal answer button, including the timer, for player Report
     def start_flashcards(self):
@@ -141,7 +142,7 @@ class Gameplay_Screen:
     def reveal_answer(self):
         global current_card
         self.canvas.itemconfig(self.card_title, text="English")
-        self.canvas.itemconfig(self.card_word, text= current_card["English"])
+        self.canvas.itemconfig(self.card_word, text=current_card["English"])
         self.Reveal_Button.grid_forget()
         self.Correct_Button.grid(row=2, column=0)
         self.Wrong_Button.grid(row=2, column=2)
@@ -150,13 +151,16 @@ class Gameplay_Screen:
     # does not get tested again, and appends it to list with words learnt, for player Report
     def remove_from_list(self):
         global current_card
-        current_card = random.choice(test_dict)
-        self.canvas.itemconfig(self.card_title, text="Chinese")
-        self.canvas.itemconfig(self.card_word, text=current_card["Chinese"])
-        test_dict.remove(current_card)
-        learnt_words.append(current_card)
-    # After running out of cards to be tested, timer ends and the Result Screen shows
-        if len(test_dict) == 0:
+        global test_dict
+        try:
+            test_dict.remove(current_card)
+            learnt_words.append(current_card)
+            current_card = random.choice(test_dict)
+            self.canvas.itemconfig(self.card_title, text="Chinese")
+            self.canvas.itemconfig(self.card_word, text=current_card["Chinese"])
+    # After running out of cards to be tested, timer ends and the Result Screen shows.
+    # It will cause an IndexError because once test_dict is [], random choice picks a random index from an empty list
+        except IndexError:
             self.end_time=time.time()
             global time_lapsed
             time_lapsed = self.end_time - self.start_time
@@ -173,6 +177,7 @@ class Gameplay_Screen:
         global retry_count
         retry_count += 1
         global current_card
+        global test_dict
         current_card = random.choice(test_dict)
         self.canvas.itemconfig(self.card_title, text="Chinese")
         self.canvas.itemconfig(self.card_word, text=current_card["Chinese"])
@@ -188,14 +193,15 @@ class Report_Screen:
 
         self.canvas = tk.Canvas(self.root, width=300, height=450)
         self.canvas.pack(side=tk.TOP)
+        # If Test yourself wasnt clicked at all, show happy face. Otherwise, it will show sad face.
         if retry_count == 0:
-            self.label = tk.Label(self.root, text=f"Well done, {player_name}!", font=("Poppins", 30))
+            self.label = tk.Label(self.root, text=f"Well done, {player_name}!", font=("Poppins", 15))
             self.label.pack(padx=10, pady=10)
             self.display_happy()
             time.sleep(1)
             self.canvas.destroy()
-        if retry_count >= 1:
-            self.label = tk.Label(self.root, text=f"Try harder, {player_name}!", font=("Poppins", 30))
+        elif retry_count >= 1:
+            self.label = tk.Label(self.root, text=f"Try harder, {player_name}!", font=("Poppins", 15))
             self.label.pack(padx=10, pady=10)
             self.display_sad()
             time.sleep(1)
@@ -205,9 +211,11 @@ class Report_Screen:
         self.label2.pack(padx=5,pady=5)
 
         self.scrollbox = tk.Listbox(self.root)
-        for values in learnt_words:
-            self.scrollbox.insert("end", values)
+        # Converts learnt words (list of dictionaries) into the form of ("Chinese Word"),"English Word",
+        # seperated by line
+        self.simplify_list(learnt_words)
         self.scrollbox.pack(padx=10,pady=10,fill=tk.BOTH,expand=True)
+
         self.scrollbar = tk.Scrollbar(self.scrollbox)
         self.scrollbar.pack(side=tk.RIGHT)
         self.scrollbox.config(yscrollcommand=self.scrollbar.set)
@@ -231,7 +239,15 @@ class Report_Screen:
         global test_dict
         test_dict = test_dict_original.copy()
         global retry_count
-        retry_count=0
+        retry_count = 0
+
+    def simplify_list(self,words):
+        ls = []
+        for i in words:
+            a = (i["Chinese"], i["English"])
+            ls.append(a)
+        for values in ls:
+            self.scrollbox.insert("end", values)
 
     def display_happy(self):
         t = turtle.RawTurtle(self.canvas)
@@ -406,5 +422,3 @@ class Credits_Screen:
         self.Close_Button.pack(padx=10, pady=10)
 
 Start_Screen()
-
-
