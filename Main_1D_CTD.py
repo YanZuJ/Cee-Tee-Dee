@@ -244,7 +244,7 @@ class Report_Screen:
     def simplify_list(self,words):
         ls = []
         for i in words:
-            a = (i["Chinese"], i["English"])
+            a = i["Chinese"], i["English"]
             ls.append(a)
         for values in ls:
             self.scrollbox.insert("end", values)
