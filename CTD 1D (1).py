@@ -158,7 +158,7 @@ t.end_fill()
 
 # In[1]:
 
-
+## make stars 
 import turtle
 t=turtle.Turtle()
 t.hideturtle()
@@ -179,6 +179,74 @@ for k in range(3):
     t.setposition(-100+100*k,0-10*k)
     t.end_fill()
 
+##neutral face
+import turtle
+t=turtle.Turtle()
+t.hideturtle()
+t.speed(6)
+radius=100
+extent=360
+
+t.color('yellow')
+t.begin_fill()
+t.circle(radius,extent)##main circle
+t.end_fill()
+
+t.penup()
+t.setposition(-50,100)
+t.pendown()
+radius=25
+extent=360
+
+
+
+
+t.color('white')
+t.begin_fill()
+t.circle(radius,extent)##first eye
+t.end_fill()
+
+t.penup()
+t.setposition(50,100)
+t.pendown()
+radius=25
+extent=360
+
+t.begin_fill()
+t.circle(radius,extent)
+t.end_fill()##second eye
+t.penup()
+
+t.color('black')
+t.begin_fill()
+t.penup()
+t.setposition(-50,110)
+t.pendown()
+radius=12.5
+extent=360
+t.circle(radius,extent)
+t.end_fill()
+t.penup()
+
+t.color('black')
+t.begin_fill()
+t.penup()
+t.setposition(50,110)
+t.pendown()
+radius=12.5
+extent=360
+t.circle(radius,extent)
+t.end_fill()
+t.penup()
+
+
+t.setposition(-50,50)
+
+
+t.pendown()
+t.forward(100)
+t.penup()
+t.setposition(0,20)
 
 
 # In[ ]:
