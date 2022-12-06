@@ -4,13 +4,32 @@ import tkinter as tk
 import turtle
 from tkinter import messagebox
 
+# Global Variables
+
+# Open csv file to retrieve data and place all in dictionary
+def convert_data_from_file():
+    ls = []
+    ls_key = []
+    ls_value = []
+    dict_in = {}
+    dict_out = []
+    dict_show = {}
+    with open("fruits_dictionary.csv", "r") as f:
+        ls = f.read().split("\n")  # Store each newline in ls
+        ls_key = ls[0].split(",")  # First line will be used as keys
+        for i in range(1, len(ls)-1):
+            ls_value = ls[i].split(",")
+            # Zip the key-value pairs in dict_in for each planning, and combine all inside dict_out
+            dict_in = dict(zip(ls_key, ls_value))
+            dict_out.append(dict_in)
+        return dict_out
+
+
 #global variables
 time_lapsed = ""
 player_name = ""
 current_card = ""
-test_dict_original = [{"Chinese":"Ping Guo","English":"Apple"},
-             {"Chinese":"Cheng Zi","English":"Orange"},
-             {"Chinese":"Xi Gua","English":"Watermelon"}]
+test_dict_original = convert_data_from_file()
 test_dict = test_dict_original.copy()
 learnt_words = []
 retry_count = 0
@@ -18,6 +37,7 @@ retry_count = 0
 #global functions
 
 #Converts seconds to string statement of hours:minutes:seconds
+
 def time_convert(sec):
   mins = sec // 60
   sec = sec % 60
