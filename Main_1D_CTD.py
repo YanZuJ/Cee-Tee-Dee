@@ -4,37 +4,7 @@ import tkinter as tk
 import turtle
 from tkinter import messagebox
 
-# Global Variables
-
-# Open csv file to retrieve data and place all in dictionary
-def convert_data_from_file():
-    ls = []
-    ls_key = []
-    ls_value = []
-    dict_in = {}
-    dict_out = []
-    dict_show = {}
-    with open("fruits_dictionary.csv", "r") as f:
-        ls = f.read().split("\n")  # Store each newline in ls
-        ls_key = ls[0].split(",")  # First line will be used as keys
-        for i in range(1, len(ls)-1):
-            ls_value = ls[i].split(",")
-            # Zip the key-value pairs in dict_in for each planning, and combine all inside dict_out
-            dict_in = dict(zip(ls_key, ls_value))
-            dict_out.append(dict_in)
-        return dict_out
-
-
-#global variables
-time_lapsed = ""
-player_name = ""
-current_card = ""
-test_dict_original = convert_data_from_file()
-test_dict = test_dict_original.copy()
-learnt_words = []
-retry_count = 0
-
-#global functions
+#Global Functions
 
 #Converts seconds to string statement of hours:minutes:seconds
 
@@ -44,6 +14,36 @@ def time_convert(sec):
   hours = mins // 60
   mins = mins % 60
   return f"{int(hours)}:{int(mins)}:{round(sec,2)}"
+
+# Open csv file to retrieve data and place all in dictionary
+
+def convert_data_from_file():
+    ls = []
+    ls_key = []
+    ls_value = []
+    dict_in = {}
+    ls_out = []
+    with open("fruits_dictionary.csv", "r") as f:
+        # Seperate each line of the file into elements of a list
+        ls = f.read().split("\n")
+        # First line used as keys
+        ls_key = ls[0].split(",")
+        # First element excluded as they are keys, last element excluded as they are blanks
+        for i in range(1, len(ls)-1):
+            ls_value = ls[i].split(",")
+            # Zip the key-value pairs in dict_in for each planning, and combine all inside dict_out
+            dict_in = dict(zip(ls_key, ls_value))
+            ls_out.append(dict_in)
+        return ls_out
+
+#global variables
+time_lapsed = ""
+player_name = ""
+current_card = ""
+test_dict_original = convert_data_from_file()
+test_dict = test_dict_original.copy()
+learnt_words = []
+retry_count = 0
 
 #classes(Screens)
 class Start_Screen:
@@ -66,7 +66,7 @@ class Start_Screen:
 
         self.root.mainloop()
 
-    # You can finally use the enter key to enter your name in the textbox, yeah it sucks
+    # You can finally use the enter key to enter your name in the textbox
     def Enter_shortcut(self,event):
         print(event.keysym)
         if event.keysym == "Return":
@@ -120,8 +120,6 @@ class Main_Menu_Screen:
     def to_gameplay(self):
         self.root.withdraw()
         Gameplay_Screen()
-
-## Insert Lucius Code Here
 
 class Gameplay_Screen:
     def __init__(self):
