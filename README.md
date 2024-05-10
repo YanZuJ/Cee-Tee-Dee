@@ -11,5 +11,3 @@ Documentation of Code
 Code
 Video
 Presentation
-Hi
-Mr Joe Tan Yu Zu
