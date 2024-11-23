@@ -1,5 +1,4 @@
 # Cee-Tee-Dee
-Your pathetic 1D project
 
 Pre-done things:
 1. Download Github
